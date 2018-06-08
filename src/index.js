@@ -32,7 +32,6 @@ export default class CKEditor extends Component {
     imageplugin: false,
     headingplugin: false,
   };
-
   state = {
     defaultValue: '',
   };
