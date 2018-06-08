@@ -3,7 +3,10 @@
   "version": "0.0.0-development",
   "description": "A package to put Ckeditor in your project",
   "main": "dist/index.umd.js",
-  "files": ["dist", "README.md"],
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "commit": "git-cz",
     "test": "mocha src/index.test.js -w --require babel-core/register",
@@ -19,9 +22,13 @@
     "type": "git",
     "url": "https://github.com/gaithoben/react-ckeditor5.git"
   },
-  "keywords": ["kenya", "counties", "constituencies", "wards"],
-  "author":
-    "Bernard Gaitho <gaithoben@gmail.com> (http://github.com/gaithoben)",
+  "keywords": [
+    "kenya",
+    "counties",
+    "constituencies",
+    "wards"
+  ],
+  "author": "Bernard Gaitho <gaithoben@gmail.com> (http://github.com/gaithoben)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/gaithoben/react-ckeditor5/issues"
@@ -32,27 +39,27 @@
     "uglifyjs-webpack-plugin": "1.1.6"
   },
   "devDependencies": {
-    "@ckeditor/ckeditor5-adapter-ckfinder": "^1.0.0-alpha.2",
-    "@ckeditor/ckeditor5-autoformat": "^1.0.0-alpha.2",
-    "@ckeditor/ckeditor5-basic-styles": "^1.0.0-alpha.2",
-    "@ckeditor/ckeditor5-block-quote": "^1.0.0-alpha.2",
-    "@ckeditor/ckeditor5-dev-utils": "^7.0.0",
-    "@ckeditor/ckeditor5-dev-webpack-plugin": "^3.0.0",
-    "@ckeditor/ckeditor5-easy-image": "^1.0.0-alpha.2",
-    "@ckeditor/ckeditor5-editor-classic": "^1.0.0-alpha.2",
-    "@ckeditor/ckeditor5-essentials": "^1.0.0-alpha.2",
-    "@ckeditor/ckeditor5-heading": "^1.0.0-alpha.2",
-    "@ckeditor/ckeditor5-image": "^1.0.0-alpha.2",
-    "@ckeditor/ckeditor5-link": "^1.0.0-alpha.2",
-    "@ckeditor/ckeditor5-list": "^1.0.0-alpha.2",
-    "@ckeditor/ckeditor5-paragraph": "^1.0.0-alpha.2",
-    "@ckeditor/ckeditor5-theme-lark": "^1.0.0-alpha.2",
-    "@ckeditor/ckeditor5-upload": "^1.0.0-alpha.2",
+    "@ckeditor/ckeditor5-adapter-ckfinder": "1.0.0-alpha.2",
+    "@ckeditor/ckeditor5-autoformat": "1.0.0-alpha.2",
+    "@ckeditor/ckeditor5-basic-styles": "1.0.0-alpha.2",
+    "@ckeditor/ckeditor5-block-quote": "1.0.0-alpha.2",
+    "@ckeditor/ckeditor5-dev-utils": "7.0.0",
+    "@ckeditor/ckeditor5-dev-webpack-plugin": "3.0.0",
+    "@ckeditor/ckeditor5-easy-image": "1.0.0-alpha.2",
+    "@ckeditor/ckeditor5-editor-classic": "1.0.0-alpha.2",
+    "@ckeditor/ckeditor5-essentials": "1.0.0-alpha.2",
+    "@ckeditor/ckeditor5-heading": "1.0.0-alpha.2",
+    "@ckeditor/ckeditor5-image": "1.0.0-alpha.2",
+    "@ckeditor/ckeditor5-link": "1.0.0-alpha.2",
+    "@ckeditor/ckeditor5-list": "1.0.0-alpha.2",
+    "@ckeditor/ckeditor5-paragraph": "1.0.0-alpha.2",
+    "@ckeditor/ckeditor5-theme-lark": "1.0.0-alpha.2",
+    "@ckeditor/ckeditor5-upload": "1.0.0-alpha.2",
     "@ckeditor/ckeditor5-utils": "1.0.0-alpha.2",
     "babel-cli": "6.26.0",
     "babel-core": "6.26.0",
     "babel-loader": "7.1.2",
-    "babel-minify-webpack-plugin": "^0.2.0",
+    "babel-minify-webpack-plugin": "0.2.0",
     "babel-plugin-transform-class-properties": "6.24.1",
     "babel-plugin-transform-react-jsx": "6.24.1",
     "babel-preset-env": "1.6.1",
@@ -81,7 +88,14 @@
     }
   },
   "babel": {
-    "presets": ["env", "react", "stage-2"],
-    "plugins": ["transform-class-properties", "transform-react-jsx"]
+    "presets": [
+      "env",
+      "react",
+      "stage-2"
+    ],
+    "plugins": [
+      "transform-class-properties",
+      "transform-react-jsx"
+    ]
   }
 }

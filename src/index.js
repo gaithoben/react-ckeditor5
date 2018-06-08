@@ -29,6 +29,8 @@ export default class CKEditor extends Component {
     },
     meta: {},
     onChange: () => {},
+    imageplugin: false,
+    headingplugin: false,
   };
 
   state = {
@@ -65,59 +67,77 @@ export default class CKEditor extends Component {
   }
   componentDidMount = () => {
     //   console.log(ClassicEditor.build.plugins.map(plugin => plugin.pluginName)); // plugins
+
+    const imageplugins = this.props.imageplugin
+      ? [
+          EasyimagePlugin,
+          ImagePlugin,
+          ImagecaptionPlugin,
+          ImagestylePlugin,
+          ImagetoolbarPlugin,
+          ImageuploadPlugin,
+        ]
+      : [];
+
+    const headingplugin = this.props.headingplugin ? [HeadingPlugin] : [];
+
+    const imagestoolbar = this.props.imageplugin
+      ? [
+          'insertimage',
+          'imageStyleAlignLeft',
+          'imageStyleFull',
+          'imageStyleAlignRight',
+        ]
+      : [];
+    const headingtoolbar = this.props.headingplugin ? ['headings'] : [];
+
     ClassicEditor.create(this.el, {
       plugins: [
         EssentialsPlugin,
         UploadadapterPlugin,
+        ...headingplugin,
         AutoformatPlugin,
         BoldPlugin,
         ItalicPlugin,
         BlockquotePlugin,
-        EasyimagePlugin,
-        HeadingPlugin,
-        ImagePlugin,
-        ImagecaptionPlugin,
-        ImagestylePlugin,
-        ImagetoolbarPlugin,
         LinkPlugin,
         ListPlugin,
         ParagraphPlugin,
-        ImageuploadPlugin,
+        ...imageplugins,
       ],
       toolbar: [
-        'headings',
+        ...headingtoolbar,
         'bold',
         'italic',
         'link',
         'bulletedList',
         'numberedList',
         'blockQuote',
-        'insertimage',
-        'imageStyleAlignLeft',
-        'imageStyleFull',
-        'imageStyleAlignRight',
+        ...imagestoolbar,
       ],
-      image: {
-        // You need to configure the image toolbar too, so it uses the new style buttons.
-        toolbar: [
-          'imageTextAlternative',
-          '|',
-          'imageStyleAlignLeft',
-          'imageStyleFull',
-          'imageStyleAlignRight',
-        ],
+      image: this.props.imageplugin
+        ? {
+            // You need to configure the image toolbar too, so it uses the new style buttons.
+            toolbar: [
+              'imageTextAlternative',
+              '|',
+              'imageStyleAlignLeft',
+              'imageStyleFull',
+              'imageStyleAlignRight',
+            ],
 
-        styles: [
-          // This option is equal to a situation where no style is applied.
-          'imageStyleFull',
+            styles: [
+              // This option is equal to a situation where no style is applied.
+              'imageStyleFull',
 
-          // This represents an image aligned to left.
-          'imageStyleAlignLeft',
+              // This represents an image aligned to left.
+              'imageStyleAlignLeft',
 
-          // This represents an image aligned to right.
-          'imageStyleAlignRight',
-        ],
-      },
+              // This represents an image aligned to right.
+              'imageStyleAlignRight',
+            ],
+          }
+        : {},
       ckfinder: {
         uploadUrl: this.props.uploadUrl,
       },
