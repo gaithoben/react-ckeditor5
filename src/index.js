@@ -45,21 +45,20 @@ export default class CKEditor extends Component {
     if (value === this.props.value || value === this.props.input.value) {
       return;
     }
-
     this.props.input.onChange(value);
     this.props.onChange(value);
   };
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps) {
     if (!this.state.defaultValue) {
-      if (nextProps.value !== this.props.value) {
-        this.setState({ defaultValue: nextProps.value }, () => {
-          this.editor.setData(nextProps.value);
+      if (prevProps.value !== this.props.value) {
+        this.setState({ defaultValue: this.props.value }, () => {
+          this.editor.setData(this.props.value);
         });
       }
-      if (nextProps.input.value !== this.props.input.value) {
-        this.setState({ defaultValue: nextProps.input.value }, () => {
-          this.editor.setData(nextProps.input.value);
+      if (prevProps.input.value !== this.props.input.value) {
+        this.setState({ defaultValue: this.props.input.value }, () => {
+          this.editor.setData(this.props.input.value);
         });
       }
     }
