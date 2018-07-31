@@ -2,7 +2,5 @@
   height: '100%';
 }
 .ck-editor__editable {
-  min-height: 200px;
-  max-height: 400px;
   text-align: justify;
 }
