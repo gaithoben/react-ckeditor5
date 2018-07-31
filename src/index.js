@@ -163,7 +163,7 @@ export default class CKEditor extends Component {
     const { meta } = this.props;
 
     return (
-      <div>
+      <div className="ck-editor-container">
         <div
           ref={el => {
             this.el = el;

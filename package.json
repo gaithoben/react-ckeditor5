@@ -38,6 +38,9 @@
     "react": "16.2.0",
     "uglifyjs-webpack-plugin": "1.1.6"
   },
+  "peerDependencies": {
+    "react": "^16.2.0"
+  },
   "devDependencies": {
     "@ckeditor/ckeditor5-adapter-ckfinder": "1.0.0-alpha.2",
     "@ckeditor/ckeditor5-autoformat": "1.0.0-alpha.2",
