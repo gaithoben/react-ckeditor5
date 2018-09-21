@@ -22,9 +22,9 @@ import './ckeditor.css';
 export default class CKEditor extends Component {
   static defaultProps = {
     uploadUrl: '/fileapi/upload/editorimage',
-    value: '',
+    value: '<p>&nbsp;</p>',
     input: {
-      value: '',
+      value: '<p>&nbsp;</p>',
       onChange: () => {},
     },
     meta: {},
@@ -32,37 +32,30 @@ export default class CKEditor extends Component {
     imageplugin: false,
     headingplugin: false,
   };
-  state = {
-    defaultValue: '',
-  };
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const val = `${nextProps.input.value || nextProps.value}`;
+    if (val !== prevState.defaultValue) {
+      return { ...prevState, defaultValue: val };
+    }
+    return { ...prevState };
+  }
   constructor(props) {
     super(props);
     this.editor = null;
     this.el = null;
+    this.state = {
+      defaultValue: '<p>&nbsp;</p>',
+    };
   }
   handleChange = value => {
-    if (value === this.props.value || value === this.props.input.value) {
-      return;
-    }
-    this.props.input.onChange(value);
-    this.props.onChange(value);
+    console.log('VAL', value);
+    this.setState({ defaultValue: value }, () => {
+      this.props.input.onChange(value);
+      this.props.onChange(value);
+    });
   };
 
-  componentDidUpdate(prevProps) {
-    if (!this.state.defaultValue) {
-      if (prevProps.value !== this.props.value) {
-        this.setState({ defaultValue: this.props.value }, () => {
-          this.editor.setData(this.props.value);
-        });
-      }
-      if (prevProps.input.value !== this.props.input.value) {
-        this.setState({ defaultValue: this.props.input.value }, () => {
-          this.editor.setData(this.props.input.value);
-        });
-      }
-    }
-  }
   componentDidMount = () => {
     //   console.log(ClassicEditor.build.plugins.map(plugin => plugin.pluginName)); // plugins
 
@@ -148,7 +141,7 @@ export default class CKEditor extends Component {
 
         // console.log(arr); // toolbar
         const viewDoc = editor.editing.view;
-        this.editor.setData(this.props.input.value || this.props.value);
+        this.editor.setData(this.state.defaultValue);
         this.editor.document.on('change', () => {
           this.handleChange(this.editor.getData());
         });
