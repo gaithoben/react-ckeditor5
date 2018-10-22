@@ -49,7 +49,6 @@ export default class CKEditor extends Component {
     };
   }
   handleChange = value => {
-    console.log('VAL', value);
     this.setState({ defaultValue: value }, () => {
       this.props.input.onChange(value);
       this.props.onChange(value);
