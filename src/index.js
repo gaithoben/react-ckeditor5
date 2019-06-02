@@ -38,6 +38,7 @@ export default class CKEditor extends Component {
     if (val !== prevState.defaultValue) {
       return { ...prevState, defaultValue: val };
     }
+
     return { ...prevState };
   }
   constructor(props) {
@@ -46,8 +47,22 @@ export default class CKEditor extends Component {
     this.el = null;
     this.state = {
       defaultValue: '<p>&nbsp;</p>',
+      firstUpdate: false,
     };
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.defaultValue !== this.state.defaultValue &&
+      !this.state.firstUpdate
+    ) {
+      if (this.editor && this.editor.setData) {
+        this.editor.setData(this.state.defaultValue);
+        this.setState({ firstUpdate: true });
+      }
+    }
+  }
+
   handleChange = value => {
     this.setState({ defaultValue: value }, () => {
       this.props.input.onChange(value);
@@ -160,8 +175,6 @@ export default class CKEditor extends Component {
             this.el = el;
           }}
         />
-        {meta.touched &&
-          meta.error && <div className="error">{meta.error}</div>}
       </div>
     );
   }
