@@ -26,6 +26,7 @@ export default class CKEditor extends Component {
     input: {
       value: '<p>&nbsp;</p>',
       onChange: () => {},
+      onBlur: () => {},
     },
     meta: {},
     onChange: () => {},
@@ -52,24 +53,35 @@ export default class CKEditor extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    // Just update values once if the exist. If Not Dont
+    const updated = prevState.defaultValue !== this.state.defaultValue;
     if (
-      prevState.defaultValue !== this.state.defaultValue &&
-      !this.state.firstUpdate
+      this.editor &&
+      this.editor.setData &&
+      !this.state.firstUpdate &&
+      updated
     ) {
-      if (this.editor && this.editor.setData) {
-        this.editor.setData(this.state.defaultValue);
-        this.setState({ firstUpdate: true });
-      }
+      this.editor.setData(this.state.defaultValue);
+      this.setState({ firstUpdate: true });
     }
   }
 
-  handleChange = value => {
-    this.setState({ defaultValue: value }, () => {
-      this.props.input.onChange(value);
-      this.props.onChange(value);
-    });
+  onInitialized = () => {
+    setTimeout(() => {
+      this.setState({ firstUpdate: true });
+    }, 500);
   };
+  onChange(data) {
+    this.setState({ defaultValue: data }, () => {
+      this.props.input.onChange(data);
+      this.props.onChange(data);
+      this.props.input.onBlur();
+    });
+  }
 
+  componentWillUnmount() {
+    this.setState({ firstUpdate: false });
+  }
   componentDidMount = () => {
     //   console.log(ClassicEditor.build.plugins.map(plugin => plugin.pluginName)); // plugins
 
@@ -155,10 +167,11 @@ export default class CKEditor extends Component {
 
         // console.log(arr); // toolbar
         const viewDoc = editor.editing.view;
-        this.editor.setData(this.state.defaultValue);
         this.editor.document.on('change', () => {
-          this.handleChange(this.editor.getData());
+          const data = this.editor.getData();
+          this.onChange(data);
         });
+        this.onInitialized();
       })
       .catch(error => {
         console.log(error);
