@@ -83,8 +83,6 @@ export default class CKEditor extends Component {
     this.setState({ firstUpdate: false });
   }
   componentDidMount = () => {
-    //   console.log(ClassicEditor.build.plugins.map(plugin => plugin.pluginName)); // plugins
-
     const imageplugins = this.props.imageplugin
       ? [
           EasyimagePlugin,
