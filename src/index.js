@@ -53,24 +53,16 @@ export default class CKEditor extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // Just update values once if the exist. If Not Dont
-    const updated = prevState.defaultValue !== this.state.defaultValue;
-    if (
-      this.editor &&
-      this.editor.setData &&
-      !this.state.firstUpdate &&
-      updated
-    ) {
-      this.editor.setData(this.state.defaultValue);
-      this.setState({ firstUpdate: true });
+    //  Just update values once if the exist. If Not Dont
+    if (this.editor && this.editor.setData && !this.state.firstUpdate) {
+      const editordata = this.editor.getData();
+      if (editordata !== this.state.defaultValue) {
+        this.editor.setData(this.state.defaultValue);
+        this.setState({ firstUpdate: true });
+      }
     }
   }
 
-  onInitialized = () => {
-    setTimeout(() => {
-      this.setState({ firstUpdate: true });
-    }, 500);
-  };
   onChange(data) {
     this.setState({ defaultValue: data }, () => {
       this.props.input.onChange(data);
@@ -78,6 +70,20 @@ export default class CKEditor extends Component {
       this.props.input.onBlur();
     });
   }
+
+  onInitialized = () => {
+    if (this.editor && this.editor.setData && !this.state.firstUpdate) {
+      const editordata = this.editor.getData();
+      if (editordata !== this.state.defaultValue) {
+        this.editor.setData(this.state.defaultValue);
+        this.setState({ firstUpdate: true });
+      }
+    }
+
+    setTimeout(() => {
+      this.setState({ firstUpdate: true });
+    }, 1000);
+  };
 
   componentWillUnmount() {
     this.setState({ firstUpdate: false });
@@ -169,6 +175,7 @@ export default class CKEditor extends Component {
           const data = this.editor.getData();
           this.onChange(data);
         });
+
         this.onInitialized();
       })
       .catch(error => {
