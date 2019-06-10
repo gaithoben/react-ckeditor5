@@ -53,7 +53,6 @@ export default class CKEditor extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    //  Just update values once if the exist. If Not Dont
     if (this.editor && this.editor.setData && !this.state.firstUpdate) {
       const editordata = this.editor.getData();
       if (editordata !== this.state.defaultValue) {
