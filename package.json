@@ -34,14 +34,12 @@
     "url": "https://github.com/gaithoben/react-ckeditor5/issues"
   },
   "homepage": "https://github.com/gaithoben/react-ckeditor5#readme",
-  "dependencies": {
-    "react": "16.2.0",
-    "uglifyjs-webpack-plugin": "1.1.6"
-  },
+  "dependencies": {},
   "peerDependencies": {
     "react": "^16.2.0"
   },
   "devDependencies": {
+    "uglifyjs-webpack-plugin": "1.1.6",
     "@ckeditor/ckeditor5-adapter-ckfinder": "1.0.0-alpha.2",
     "@ckeditor/ckeditor5-autoformat": "1.0.0-alpha.2",
     "@ckeditor/ckeditor5-basic-styles": "1.0.0-alpha.2",
