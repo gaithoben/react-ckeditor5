@@ -1,37 +1,48 @@
-import React, { Component } from 'react';
-import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
-import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials';
-import UploadadapterPlugin from '@ckeditor/ckeditor5-adapter-ckfinder/src/uploadadapter';
-import AutoformatPlugin from '@ckeditor/ckeditor5-autoformat/src/autoformat';
-import BoldPlugin from '@ckeditor/ckeditor5-basic-styles/src/bold';
-import ItalicPlugin from '@ckeditor/ckeditor5-basic-styles/src/italic';
-import BlockquotePlugin from '@ckeditor/ckeditor5-block-quote/src/blockquote';
-import EasyimagePlugin from '@ckeditor/ckeditor5-easy-image/src/easyimage';
-import HeadingPlugin from '@ckeditor/ckeditor5-heading/src/heading';
-import ImagePlugin from '@ckeditor/ckeditor5-image/src/image';
-import ImagecaptionPlugin from '@ckeditor/ckeditor5-image/src/imagecaption';
-import ImagestylePlugin from '@ckeditor/ckeditor5-image/src/imagestyle';
-import ImagetoolbarPlugin from '@ckeditor/ckeditor5-image/src/imagetoolbar';
-import LinkPlugin from '@ckeditor/ckeditor5-link/src/link';
-import ListPlugin from '@ckeditor/ckeditor5-list/src/list';
-import ParagraphPlugin from '@ckeditor/ckeditor5-paragraph/src/paragraph';
-import ImageuploadPlugin from '@ckeditor/ckeditor5-upload/src/imageupload';
-import placeholder from '@ckeditor/ckeditor5-engine/src/view/placeholder';
-import './ckeditor.css';
+import React, { Component } from "react";
+import ClassicEditor from "@ckeditor/ckeditor5-editor-classic/src/classiceditor";
+
+import Essentials from "@ckeditor/ckeditor5-essentials/src/essentials";
+import Autoformat from "@ckeditor/ckeditor5-autoformat/src/autoformat";
+import Bold from "@ckeditor/ckeditor5-basic-styles/src/bold";
+import Italic from "@ckeditor/ckeditor5-basic-styles/src/italic";
+import BlockQuote from "@ckeditor/ckeditor5-block-quote/src/blockquote";
+import CKFinder from "@ckeditor/ckeditor5-ckfinder/src/ckfinder";
+import EasyImage from "@ckeditor/ckeditor5-easy-image/src/easyimage";
+import Heading from "@ckeditor/ckeditor5-heading/src/heading";
+import Image from "@ckeditor/ckeditor5-image/src/image";
+import ImageCaption from "@ckeditor/ckeditor5-image/src/imagecaption";
+import ImageStyle from "@ckeditor/ckeditor5-image/src/imagestyle";
+import ImageToolbar from "@ckeditor/ckeditor5-image/src/imagetoolbar";
+import ImageUpload from "@ckeditor/ckeditor5-image/src/imageupload";
+import SimpleUploadAdapter from "@ckeditor/ckeditor5-upload/src/adapters/simpleuploadadapter";
+import Indent from "@ckeditor/ckeditor5-indent/src/indent";
+import Link from "@ckeditor/ckeditor5-link/src/link";
+import List from "@ckeditor/ckeditor5-list/src/list";
+import MediaEmbed from "@ckeditor/ckeditor5-media-embed/src/mediaembed";
+import Paragraph from "@ckeditor/ckeditor5-paragraph/src/paragraph";
+import Table from "@ckeditor/ckeditor5-table/src/table";
+import TableToolbar from "@ckeditor/ckeditor5-table/src/tabletoolbar";
+import Alignment from "@ckeditor/ckeditor5-alignment/src/alignment";
+import HorizontalLine from "@ckeditor/ckeditor5-horizontal-line/src/horizontalline";
+import WordCount from "@ckeditor/ckeditor5-word-count/src/wordcount";
+
+import "./ckeditor.css";
+
+// export class ClassicEditor extends ClassicEditorBase {}
 
 export default class CKEditor extends Component {
   static defaultProps = {
-    uploadUrl: '/fileapi/upload/editorimage',
-    value: '<p>&nbsp;</p>',
+    uploadUrl: "/fileapi/upload/editorimage",
+    value: "<p>&nbsp;</p>",
     input: {
-      value: '<p>&nbsp;</p>',
+      value: "<p>&nbsp;</p>",
       onChange: () => {},
-      onBlur: () => {},
+      onBlur: () => {}
     },
     meta: {},
     onChange: () => {},
     imageplugin: false,
-    headingplugin: false,
+    headingplugin: false
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -47,8 +58,8 @@ export default class CKEditor extends Component {
     this.editor = null;
     this.el = null;
     this.state = {
-      defaultValue: '<p>&nbsp;</p>',
-      firstUpdate: false,
+      defaultValue: "<p>&nbsp;</p>",
+      firstUpdate: false
     };
   }
 
@@ -88,97 +99,90 @@ export default class CKEditor extends Component {
     this.setState({ firstUpdate: false });
   }
   componentDidMount = () => {
-    const imageplugins = this.props.imageplugin
-      ? [
-          EasyimagePlugin,
-          ImagePlugin,
-          ImagecaptionPlugin,
-          ImagestylePlugin,
-          ImagetoolbarPlugin,
-          ImageuploadPlugin,
-        ]
-      : [];
-
-    const headingplugin = this.props.headingplugin ? [HeadingPlugin] : [];
-
-    const imagestoolbar = this.props.imageplugin
-      ? [
-          'insertimage',
-          'imageStyleAlignLeft',
-          'imageStyleFull',
-          'imageStyleAlignRight',
-        ]
-      : [];
-    const headingtoolbar = this.props.headingplugin ? ['headings'] : [];
-
     ClassicEditor.create(this.el, {
       plugins: [
-        EssentialsPlugin,
-        UploadadapterPlugin,
-        ...headingplugin,
-        AutoformatPlugin,
-        BoldPlugin,
-        ItalicPlugin,
-        BlockquotePlugin,
-        LinkPlugin,
-        ListPlugin,
-        ParagraphPlugin,
-        ...imageplugins,
+        Essentials,
+        Autoformat,
+        Bold,
+        Italic,
+        BlockQuote,
+        CKFinder,
+        EasyImage,
+        Heading,
+        Image,
+        ImageCaption,
+        ImageStyle,
+        ImageToolbar,
+        ImageUpload,
+        SimpleUploadAdapter,
+        Indent,
+        Link,
+        List,
+        MediaEmbed,
+        Paragraph,
+        Table,
+        TableToolbar,
+        Alignment,
+        HorizontalLine,
+        WordCount
       ],
-      toolbar: [
-        ...headingtoolbar,
-        'bold',
-        'italic',
-        'link',
-        'bulletedList',
-        'numberedList',
-        'blockQuote',
-        ...imagestoolbar,
-      ],
-      image: this.props.imageplugin
-        ? {
-            // You need to configure the image toolbar too, so it uses the new style buttons.
-            toolbar: [
-              'imageTextAlternative',
-              '|',
-              'imageStyleAlignLeft',
-              'imageStyleFull',
-              'imageStyleAlignRight',
-            ],
-
-            styles: [
-              // This option is equal to a situation where no style is applied.
-              'imageStyleFull',
-
-              // This represents an image aligned to left.
-              'imageStyleAlignLeft',
-
-              // This represents an image aligned to right.
-              'imageStyleAlignRight',
-            ],
-          }
-        : {},
-      ckfinder: {
-        uploadUrl: this.props.uploadUrl,
+      toolbar: {
+        items: [
+          "heading",
+          "|",
+          "bold",
+          "italic",
+          "link",
+          "bulletedList",
+          "numberedList",
+          "alignment",
+          "|",
+          "indent",
+          "outdent",
+          "|",
+          "imageUpload",
+          "blockQuote",
+          "insertTable",
+          "mediaEmbed",
+          "undo",
+          "redo",
+          "horizontalLine"
+        ]
       },
-      placeholder: 'Type here...',
+      image: {
+        toolbar: [
+          "imageStyle:full",
+          "imageStyle:side",
+          "|",
+          "imageTextAlternative"
+        ]
+      },
+      table: {
+        contentToolbar: ["tableColumn", "tableRow", "mergeTableCells"]
+      },
+      simpleUpload: {
+        // The URL that the images are uploaded to.
+        uploadUrl: this.props.uploadUrl,
+
+        // Headers sent along with the XMLHttpRequest to the upload server.
+        headers: {
+          ...this.props.headers
+        }
+      },
+      wordCount: {
+        onUpdate: stats => {
+          // Prints the current content statistics.
+          console.log(`Characters: ${stats.characters}\nWords: ${stats.words}`);
+        }
+      },
+      // This value must be kept in sync with the language defined in webpack.config.js.
+      language: "en"
     })
       .then(editor => {
-        this.editor = editor;
-        // console.log( 'Editor was initialized', editor );
-        // const arr = Array.from(editor.ui.componentFactory.names());
-
-        // console.log(arr); // toolbar
-        const viewDoc = editor.editing.view;
-        this.editor.document.on('change', () => {
-          const data = this.editor.getData();
-          this.onChange(data);
-        });
-
-        this.onInitialized();
+        console.log(editor);
       })
       .catch(error => {
-        console.log(error);
+        console.error(error);
       });
   };
 

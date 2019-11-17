@@ -1,158 +1,207 @@
-// import React, { Component } from 'react';
-// import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
-// import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials';
-// import UploadadapterPlugin from '@ckeditor/ckeditor5-adapter-ckfinder/src/uploadadapter';
-// import AutoformatPlugin from '@ckeditor/ckeditor5-autoformat/src/autoformat';
-// import BoldPlugin from '@ckeditor/ckeditor5-basic-styles/src/bold';
-// import ItalicPlugin from '@ckeditor/ckeditor5-basic-styles/src/italic';
-// import BlockquotePlugin from '@ckeditor/ckeditor5-block-quote/src/blockquote';
-// import EasyimagePlugin from '@ckeditor/ckeditor5-easy-image/src/easyimage';
-// import HeadingPlugin from '@ckeditor/ckeditor5-heading/src/heading';
-// import ImagePlugin from '@ckeditor/ckeditor5-image/src/image';
-// import ImagecaptionPlugin from '@ckeditor/ckeditor5-image/src/imagecaption';
-// import ImagestylePlugin from '@ckeditor/ckeditor5-image/src/imagestyle';
-// import ImagetoolbarPlugin from '@ckeditor/ckeditor5-image/src/imagetoolbar';
-// import LinkPlugin from '@ckeditor/ckeditor5-link/src/link';
-// import ListPlugin from '@ckeditor/ckeditor5-list/src/list';
-// import ParagraphPlugin from '@ckeditor/ckeditor5-paragraph/src/paragraph';
-// import ImageuploadPlugin from '@ckeditor/ckeditor5-upload/src/imageupload';
-// import placeholder from '@ckeditor/ckeditor5-engine/src/view/placeholder';
-// import './ckeditor.css';
+import React, { Component } from "react";
+import ClassicEditor from "@ckeditor/ckeditor5-editor-classic/src/classiceditor";
+import UploadAdapter from "@ckeditor/ckeditor5-adapter-ckfinder/src/uploadadapter";
+import EssentialsPlugin from "@ckeditor/ckeditor5-essentials/src/essentials";
+import SimpleUploadAdapter from "@ckeditor/ckeditor5-upload/src/simpleuploadadapter";
+import AutoformatPlugin from "@ckeditor/ckeditor5-autoformat/src/autoformat";
+import BoldPlugin from "@ckeditor/ckeditor5-basic-styles/src/bold";
+import ItalicPlugin from "@ckeditor/ckeditor5-basic-styles/src/italic";
+import BlockquotePlugin from "@ckeditor/ckeditor5-block-quote/src/blockquote";
+import EasyimagePlugin from "@ckeditor/ckeditor5-easy-image/src/easyimage";
+import HeadingPlugin from "@ckeditor/ckeditor5-heading/src/heading";
+import ImagePlugin from "@ckeditor/ckeditor5-image/src/image";
+import ImagecaptionPlugin from "@ckeditor/ckeditor5-image/src/imagecaption";
+import ImagestylePlugin from "@ckeditor/ckeditor5-image/src/imagestyle";
+import ImagetoolbarPlugin from "@ckeditor/ckeditor5-image/src/imagetoolbar";
+import LinkPlugin from "@ckeditor/ckeditor5-link/src/link";
+import ListPlugin from "@ckeditor/ckeditor5-list/src/list";
+import ParagraphPlugin from "@ckeditor/ckeditor5-paragraph/src/paragraph";
+import ImageuploadPlugin from "@ckeditor/ckeditor5-upload/src/imageupload";
+import placeholder from "@ckeditor/ckeditor5-engine/src/view/placeholder";
+import "./ckeditor.css";
 
-// export default class CKEditor extends Component {
-//   static defaultProps = {
-//     uploadUrl: '/fileapi/upload/editorimage',
-//     value: '',
-//     input: {
-//       value: '',
-//       onChange: () => {},
-//     },
-//     meta: {},
-//     onChange: () => {},
-//   };
+export default class CKEditor extends Component {
+  static defaultProps = {
+    uploadUrl: "/fileapi/upload/editorimage",
+    value: "<p>&nbsp;</p>",
+    input: {
+      value: "<p>&nbsp;</p>",
+      onChange: () => {},
+      onBlur: () => {}
+    },
+    meta: {},
+    onChange: () => {},
+    imageplugin: false,
+    headingplugin: false
+  };
 
-//   state = {
-//     defaultValue: '',
-//   };
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const val = `${nextProps.input.value || nextProps.value}`;
+    if (val !== prevState.defaultValue) {
+      return { ...prevState, defaultValue: val };
+    }
 
-//   constructor(props) {
-//     super(props);
-//     this.editor = null;
-//     this.el = null;
-//   }
-//   handleChange = value => {
-//     if (value === this.props.value || value === this.props.input.value) {
-//       return;
-//     }
+    return { ...prevState };
+  }
+  constructor(props) {
+    super(props);
+    this.editor = null;
+    this.el = null;
+    this.state = {
+      defaultValue: "<p>&nbsp;</p>",
+      firstUpdate: false
+    };
+  }
 
-//     this.props.input.onChange(value);
-//     this.props.onChange(value);
-//   };
+  componentDidUpdate(prevProps, prevState) {
+    if (this.editor && this.editor.setData && !this.state.firstUpdate) {
+      const editordata = this.editor.getData();
+      if (editordata !== this.state.defaultValue) {
+        this.editor.setData(this.state.defaultValue);
+        this.setState({ firstUpdate: true });
+      }
+    }
+  }
 
-//   componentWillReceiveProps(nextProps) {
-//     if (!this.state.defaultValue) {
-//       if (nextProps.value !== this.props.value) {
-//         this.setState({ defaultValue: nextProps.value }, () => {
-//           this.editor.setData(nextProps.value);
-//         });
-//       }
-//       if (nextProps.input.value !== this.props.input.value) {
-//         this.setState({ defaultValue: nextProps.input.value }, () => {
-//           this.editor.setData(nextProps.input.value);
-//         });
-//       }
-//     }
-//   }
-//   componentDidMount = () => {
-//     //   console.log(ClassicEditor.build.plugins.map(plugin => plugin.pluginName)); // plugins
-//     ClassicEditor.create(this.el, {
-//       plugins: [
-//         EssentialsPlugin,
-//         UploadadapterPlugin,
-//         AutoformatPlugin,
-//         BoldPlugin,
-//         ItalicPlugin,
-//         BlockquotePlugin,
-//         EasyimagePlugin,
-//         HeadingPlugin,
-//         ImagePlugin,
-//         ImagecaptionPlugin,
-//         ImagestylePlugin,
-//         ImagetoolbarPlugin,
-//         LinkPlugin,
-//         ListPlugin,
-//         ParagraphPlugin,
-//         ImageuploadPlugin,
-//       ],
-//       toolbar: [
-//         'headings',
-//         'bold',
-//         'italic',
-//         'link',
-//         'bulletedList',
-//         'numberedList',
-//         'blockQuote',
-//         'insertimage',
-//         'imageStyleAlignLeft',
-//         'imageStyleFull',
-//         'imageStyleAlignRight',
-//       ],
-//       image: {
-//         // You need to configure the image toolbar too, so it uses the new style buttons.
-//         toolbar: [
-//           'imageTextAlternative',
-//           '|',
-//           'imageStyleAlignLeft',
-//           'imageStyleFull',
-//           'imageStyleAlignRight',
-//         ],
+  onChange(data) {
+    this.setState({ defaultValue: data }, () => {
+      this.props.input.onChange(data);
+      this.props.onChange(data);
+      this.props.input.onBlur();
+    });
+  }
 
-//         styles: [
-//           // This option is equal to a situation where no style is applied.
-//           'imageStyleFull',
+  onInitialized = () => {
+    if (this.editor && this.editor.setData && !this.state.firstUpdate) {
+      const editordata = this.editor.getData();
+      if (editordata !== this.state.defaultValue) {
+        this.editor.setData(this.state.defaultValue);
+        this.setState({ firstUpdate: true });
+      }
+    }
 
-//           // This represents an image aligned to left.
-//           'imageStyleAlignLeft',
+    setTimeout(() => {
+      this.setState({ firstUpdate: true });
+    }, 1000);
+  };
 
-//           // This represents an image aligned to right.
-//           'imageStyleAlignRight',
-//         ],
-//       },
-//       ckfinder: {
-//         uploadUrl: this.props.uploadUrl,
-//       },
-//       placeholder: 'Type here...',
-//     })
-//       .then(editor => {
-//         this.editor = editor;
-//         // console.log( 'Editor was initialized', editor );
-//         // const arr = Array.from(editor.ui.componentFactory.names());
+  componentWillUnmount() {
+    this.setState({ firstUpdate: false });
+  }
+  componentDidMount = () => {
+    const imageplugins = this.props.imageplugin
+      ? [
+          EasyimagePlugin,
+          ImagePlugin,
+          ImagecaptionPlugin,
+          ImagestylePlugin,
+          ImagetoolbarPlugin,
+          ImageuploadPlugin
+        ]
+      : [];
 
-//         // console.log(arr); // toolbar
-//         const viewDoc = editor.editing.view;
-//         this.editor.setData(this.props.input.value || this.props.value);
-//         this.editor.document.on('change', () => {
-//           this.handleChange(this.editor.getData());
-//         });
-//       })
-//       .catch(error => {
-//         console.log(error);
-//       });
-//   };
+    const headingplugin = this.props.headingplugin ? [HeadingPlugin] : [];
 
-//   render() {
-//     const { meta } = this.props;
+    const imagestoolbar = this.props.imageplugin
+      ? [
+          "insertimage",
+          "imageStyleAlignLeft",
+          "imageStyleFull",
+          "imageStyleAlignRight"
+        ]
+      : [];
+    const headingtoolbar = this.props.headingplugin ? ["headings"] : [];
 
-//     return (
-//       <div>
-//         <div
-//           ref={el => {
-//             this.el = el;
-//           }}
-//         />
-//         {meta.touched &&
-//           meta.error && <div className="error">{meta.error}</div>}
-//       </div>
-//     );
-//   }
-// }
+    ClassicEditor.create(this.el, {
+      plugins: [
+        EssentialsPlugin,
+        UploadadapterPlugin,
+        ...headingplugin,
+        AutoformatPlugin,
+        BoldPlugin,
+        ItalicPlugin,
+        BlockquotePlugin,
+        LinkPlugin,
+        ListPlugin,
+        ParagraphPlugin,
+        ...imageplugins
+      ],
+      toolbar: [
+        ...headingtoolbar,
+        "bold",
+        "italic",
+        "link",
+        "bulletedList",
+        "numberedList",
+        "blockQuote",
+        ...imagestoolbar
+      ],
+      image: this.props.imageplugin
+        ? {
+            // You need to configure the image toolbar too, so it uses the new style buttons.
+            toolbar: [
+              "imageTextAlternative",
+              "|",
+              "imageStyleAlignLeft",
+              "imageStyleFull",
+              "imageStyleAlignRight"
+            ],
+
+            styles: [
+              // This option is equal to a situation where no style is applied.
+              "imageStyleFull",
+
+              // This represents an image aligned to left.
+              "imageStyleAlignLeft",
+
+              // This represents an image aligned to right.
+              "imageStyleAlignRight"
+            ]
+          }
+        : {},
+      simpleUpload: {
+        // The URL that the images are uploaded to.
+        uploadUrl: this.props.uploadUrl,
+
+        // Headers sent along with the XMLHttpRequest to the upload server.
+        headers: {
+          "X-CSRF-TOKEN": "CSFR-Token",
+          Authorization: "Bearer <JSON Web Token>",
+          ...this.props.headers
+        }
+      },
+      placeholder: "Type here..."
+    })
+      .then(editor => {
+        this.editor = editor;
+        // console.log( 'Editor was initialized', editor );
+        // const arr = Array.from(editor.ui.componentFactory.names());
+
+        // console.log(arr); // toolbar
+        const viewDoc = editor.editing.view;
+        this.editor.document.on("change", () => {
+          const data = this.editor.getData();
+          this.onChange(data);
+        });
+
+        this.onInitialized();
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  render() {
+    const { meta } = this.props;
+
+    return (
+      <div className="ck-editor-container">
+        <div
+          ref={el => {
+            this.el = el;
+          }}
+        />
+      </div>
+    );
+  }
+}
