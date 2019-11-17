@@ -40,8 +40,7 @@ const CKEditor = ({
   mediaplugin,
   tableplugin,
   onUpdate,
-  onFocus,
-  containerStyles
+  onFocus
 }) => {
   const val = input.value || value;
 
@@ -167,42 +166,32 @@ const CKEditor = ({
   }, [val]);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flex: 1,
-        minHeight: "400px",
-        ...containerStyles
+    <ReactCKEditor
+      editor={Editor}
+      data={data}
+      onInit={editor => {
+        // You can store the "editor" and use when it is needed.
       }}
-    >
-      <ReactCKEditor
-        editor={Editor}
-        data={data}
-        onInit={editor => {
-          // You can store the "editor" and use when it is needed.
-          console.log("Editor is ready to use!", editor);
-        }}
-        onChange={(event, editor) => {
-          const data = editor.getData();
-          if (typeof input.onChange === "function") {
-            input.onChange(data);
-          }
-          if (typeof onChange === "function") {
-            onChange(data);
-          }
-        }}
-        onBlur={(event, editor) => {
-          if (typeof input.onBlur === "function") {
-            input.onBlur();
-          }
-        }}
-        onFocus={(event, editor) => {
-          if (typeof onFocus === "function") {
-            onFocus();
-          }
-        }}
-      />
-    </div>
+      onChange={(event, editor) => {
+        const data = editor.getData();
+        if (typeof input.onChange === "function") {
+          input.onChange(data);
+        }
+        if (typeof onChange === "function") {
+          onChange(data);
+        }
+      }}
+      onBlur={(event, editor) => {
+        if (typeof input.onBlur === "function") {
+          input.onBlur();
+        }
+      }}
+      onFocus={(event, editor) => {
+        if (typeof onFocus === "function") {
+          onFocus();
+        }
+      }}
+    />
   );
 };
 
@@ -222,7 +211,6 @@ CKEditor.defaultProps = {
   imageplugin: false,
   headingplugin: false,
   mediaplugin: false,
-  tableplugin: false,
-  containerStyles: {}
+  tableplugin: false
 };
 export default CKEditor;
