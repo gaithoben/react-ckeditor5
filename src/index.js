@@ -28,6 +28,8 @@ import WordCount from "@ckeditor/ckeditor5-word-count/src/wordcount";
 
 import ReactCKEditor from "@ckeditor/ckeditor5-react";
 
+import "./ckeditor.css";
+
 export class ClassicEditor extends ClassicEditorBase {}
 
 const CKEditor = ({
@@ -197,9 +199,9 @@ const CKEditor = ({
 
 CKEditor.defaultProps = {
   uploadUrl: "/fileapi/upload/editorimage",
-  value: "<p>&nbsp;</p>",
+  value: "",
   input: {
-    value: "<p>&nbsp;</p>",
+    value: "",
     onChange: () => {},
     onBlur: () => {}
   },
