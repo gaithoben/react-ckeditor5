@@ -28,8 +28,6 @@ import WordCount from "@ckeditor/ckeditor5-word-count/src/wordcount";
 
 import ReactCKEditor from "@ckeditor/ckeditor5-react";
 
-import "./ckeditor.css";
-
 export class ClassicEditor extends ClassicEditorBase {}
 
 const CKEditor = ({
@@ -42,11 +40,12 @@ const CKEditor = ({
   mediaplugin,
   tableplugin,
   onUpdate,
-  onFocus
+  onFocus,
+  containerStyles
 }) => {
   const val = input.value || value;
 
-  const [data, setData] = React.useState("");
+  const [data, setData] = React.useState(val);
 
   const Editor = React.useRef(ClassicEditor).current;
 
@@ -168,40 +167,48 @@ const CKEditor = ({
   }, [val]);
 
   return (
-    <ReactCKEditor
-      editor={Editor}
-      data={data}
-      onInit={editor => {
-        // You can store the "editor" and use when it is needed.
+    <div
+      style={{
+        display: "flex",
+        flex: 1,
+        ...containerStyles
       }}
-      onChange={(event, editor) => {
-        const data = editor.getData();
-        if (typeof input.onChange === "function") {
-          input.onChange(data);
-        }
-        if (typeof onChange === "function") {
-          onChange(data);
-        }
-      }}
-      onBlur={(event, editor) => {
-        if (typeof input.onBlur === "function") {
-          input.onBlur();
-        }
-      }}
-      onFocus={(event, editor) => {
-        if (typeof onFocus === "function") {
-          onFocus();
-        }
-      }}
-    />
+    >
+      <ReactCKEditor
+        editor={Editor}
+        data={data}
+        onInit={editor => {
+          // You can store the "editor" and use when it is needed.
+        }}
+        onChange={(event, editor) => {
+          const data = editor.getData();
+          if (typeof input.onChange === "function") {
+            input.onChange(data);
+          }
+          if (typeof onChange === "function") {
+            onChange(data);
+          }
+        }}
+        onBlur={(event, editor) => {
+          if (typeof input.onBlur === "function") {
+            input.onBlur();
+          }
+        }}
+        onFocus={(event, editor) => {
+          if (typeof onFocus === "function") {
+            onFocus();
+          }
+        }}
+      />
+    </div>
   );
 };
 
 CKEditor.defaultProps = {
   uploadUrl: "/fileapi/upload/editorimage",
-  value: "",
+  value: "<p>&nbsp;</p>",
   input: {
-    value: "",
+    value: "<p>&nbsp;</p>",
     onChange: () => {},
     onBlur: () => {}
   },
@@ -213,6 +220,7 @@ CKEditor.defaultProps = {
   imageplugin: false,
   headingplugin: false,
   mediaplugin: false,
-  tableplugin: false
+  tableplugin: false,
+  containerStyles: {}
 };
 export default CKEditor;
